@@ -1,0 +1,31 @@
+name: PR DEV para TEST
+
+on:
+  pull_request:
+    branches:
+      - test
+    types:
+      - opened
+      - synchronize
+      - reopened
+
+jobs:
+  validar-pr-dev-test:
+    if: github.event.pull_request.head.ref == 'dev'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o código do repositório
+        uses: actions/checkout@v4
+
+      - name: Mostrar arquivos do projeto
+        run: ls -R
+
+      - name: Verificar se existe index.html
+        run: |
+          if find . -name "index.html" | grep -q .; then
+            echo "index.html encontrado."
+          else
+            echo "index.html não encontrado."
+            exit 1
+          fi
