@@ -1,0 +1,26 @@
+name: Pipeline DEV
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  validar-dev:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar o código do repositório
+        uses: actions/checkout@v4
+
+      - name: Mostrar arquivos do projeto
+        run: ls -R
+
+      - name: Verificar se existe pelo menos um HTML
+        run: |
+          if find . -name "*.html" | grep -q .; then
+            echo "Arquivos HTML encontrados com sucesso."
+          else
+            echo "Nenhum arquivo HTML encontrado."
+            exit 1
+          fi
